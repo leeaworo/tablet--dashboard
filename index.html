@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>St. Jude's Clinical Assistant Workspace</title>
-  <!-- Tailwind CSS v4 CDN -->
+  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <!-- Google Fonts for crisp clean look and handwritten simulation -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,10 +22,10 @@
     }
   </style>
 </head>
-<body class="bg-[#0f1319] text-[#e2e8f0] min-h-screen p-4 flex items-center justify-center overflow-x-hidden selection:bg-teal-500/30">
+<body class="bg-[#0f1319] text-[#e2e8f0] min-h-screen p-4 flex items-center justify-center overflow-x-hidden">
 
   <!-- ==================== MAIN VIEWPORT INTERFACE ==================== -->
-  <div id="main-dashboard" class="w-full max-w-2xl bg-[#141b22] border border-gray-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between min-h-[85vh] transition-all duration-300">
+  <div id="main-dashboard" class="w-full max-w-2xl bg-[#141b22] border border-gray-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between min-h-[85vh]">
     <div class="landscape:grid landscape:grid-cols-2 landscape:gap-6 space-y-6 landscape:space-y-0">
       
       <!-- Left Column / Block -->
@@ -51,11 +51,11 @@
         <!-- Patient Entry Core Trigger Actions -->
         <section class="bg-[#1c242c] border border-gray-800 rounded-xl p-4 space-y-3 shadow-inner">
           <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Patient Management</h3>
-          <button onclick="openModal('modal-new-patient')" class="w-full bg-[#22c55e] hover:bg-emerald-600 text-white font-black text-lg py-3.5 px-5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-3 uppercase tracking-wider active:scale-[0.98] cursor-pointer">
+          <button onclick="openModal('modal-new-patient')" class="w-full bg-[#22c55e] hover:bg-emerald-600 text-white font-black text-lg py-3.5 px-5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-3 uppercase tracking-wider cursor-pointer">
             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
             New Patient
           </button>
-          <button onclick="openModal('modal-returning-patient')" class="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-black text-lg py-3.5 px-5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-3 uppercase tracking-wider active:scale-[0.98] cursor-pointer">
+          <button onclick="openModal('modal-returning-patient')" class="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-black text-lg py-3.5 px-5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-3 uppercase tracking-wider cursor-pointer">
             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
             Returning Patient
           </button>
@@ -130,7 +130,7 @@
   <!-- ==================== INTERFACE MODALS ==================== -->
 
   <!-- 1. ASSISTANT ONBOARDING M3 BOTTOM SHEET MODAL -->
-  <div id="sheet-assistant-onboarding" class="fixed inset-0 bg-black/60 z-50 hidden backdrop-blur-xs flex justify-center items-end" onclick="closeModalOnOutsideClick(event, 'sheet-assistant-onboarding')">
+  <div id="sheet-assistant-onboarding" class="fixed inset-0 bg-black/60 z-50 hidden backdrop-blur-sm flex justify-center items-end" onclick="closeModalOnOutsideClick(event, 'sheet-assistant-onboarding')">
     <div class="w-full max-w-2xl bg-[#141b22] border-t border-gray-700 rounded-t-3xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto transform translate-y-full transition-transform duration-300" onclick="event.stopPropagation()">
       <div class="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mb-6"></div>
       <div class="flex justify-between items-center mb-4">
@@ -169,27 +169,25 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">Biological Sex</label>
-            <div class="flex gap-4 mt-2">
-              <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="reg-asst-sex" value="Male" class="accent-teal-500"> Male</label>
-              <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="reg-asst-sex" value="Female" checked class="accent-teal-500"> Female</label>
-            </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">Biological Sex</label>
+          <div class="flex gap-4 mt-1 text-white">
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="reg-asst-sex" value="Male" class="accent-teal-500"> Male</label>
+            <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="reg-asst-sex" value="Female" checked class="accent-teal-500"> Female</label>
           </div>
         </div>
 
         <div>
           <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">Clinical Designation</label>
           <div class="grid grid-cols-3 gap-2 mt-1">
-            <label class="flex items-center justify-center p-2 bg-[#1a232d] rounded-xl border border-gray-700 cursor-pointer text-center text-xs has-[:checked]:border-teal-500 has-[:checked]:bg-teal-500/10">
-              <input type="radio" name="reg-asst-role" value="Nurse" checked class="hidden"> Nurse
+            <label class="flex items-center justify-center p-2 bg-[#1a232d] rounded-xl border border-gray-700 cursor-pointer text-center text-xs text-white">
+              <input type="radio" name="reg-asst-role" value="Nurse" checked class="mr-1 accent-teal-500"> Nurse
             </label>
-            <label class="flex items-center justify-center p-2 bg-[#1a232d] rounded-xl border border-gray-700 cursor-pointer text-center text-xs has-[:checked]:border-teal-500 has-[:checked]:bg-teal-500/10">
-              <input type="radio" name="reg-asst-role" value="Health-worker" class="hidden"> Health-worker
+            <label class="flex items-center justify-center p-2 bg-[#1a232d] rounded-xl border border-gray-700 cursor-pointer text-center text-xs text-white">
+              <input type="radio" name="reg-asst-role" value="Health-worker" class="mr-1 accent-teal-500"> Worker
             </label>
-            <label class="flex items-center justify-center p-2 bg-[#1a232d] rounded-xl border border-gray-700 cursor-pointer text-center text-xs has-[:checked]:border-teal-500 has-[:checked]:bg-teal-500/10">
-              <input type="radio" name="reg-asst-role" value="Midwife" class="hidden"> Midwife
+            <label class="flex items-center justify-center p-2 bg-[#1a232d] rounded-xl border border-gray-700 cursor-pointer text-center text-xs text-white">
+              <input type="radio" name="reg-asst-role" value="Midwife" class="mr-1 accent-teal-500"> Midwife
             </label>
           </div>
         </div>
@@ -213,8 +211,7 @@
     </div>
   </div>
 
-  <!-- 2. NEW PATIENT FULL SCREEN BOTTOM SHEET MODAL -->
-  <div id="modal-new-patient" class="fixed inset-0 bg-[#0f1319] z-50 hidden flex flex-col">
+  <div id="modal-new-patient" class="fixed inset-0 bg-[#0f1319] z-50 hidden flex flex-col transition-all duration-300">
     <div class="h-[35%] bg-[#141b22] border-b border-gray-800 p-4 flex flex-col justify-between">
       <div class="flex justify-between items-center">
         <span class="text-xs font-bold text-teal-400 uppercase tracking-widest flex items-center gap-1.5">
@@ -255,17 +252,17 @@
       <div class="absolute top-2 right-4 text-[10px] font-mono text-blue-400 font-bold tracking-widest uppercase pointer-events-none">Stylus Canvas Lower Surface</div>
       
       <div class="max-w-xl mx-auto space-y-4 pt-4">
-        <div class="bg-[#1c242c] border border-gray-800 rounded-xl p-4 shadow-sm space-y-2">
-          <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest font-sans">Simulate Stylus Entry Input String:</label>
-          <textarea id="stylus-simulated-textarea" oninput="processStylusHandwritingOCR(this.value)" placeholder="Write here... (e.g., Name: Fatima Bello, Age: 28, Sex: Female, Occupation: Teacher, Allergies: Penicillin, Conditions: None)" rows="3" class="w-full bg-[#141b22] text-teal-400 border border-gray-700 rounded-lg p-3 text-sm font-mono focus:outline-none focus:border-teal-500 handwritten text-xl tracking-wide"></textarea>
-          <p class="text-[10px] text-gray-500 font-sans italic">Type keywords like "Name: ", "Age: ", "Sex: Female" to trigger the translucent teal glance verification values overhead!</p>
+        <div class="bg-[#141b22] border border-gray-800 p-4 rounded-xl shadow-md text-slate-300">
+          <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest font-sans mb-2">Simulate Stylus Entry Input String:</label>
+          <textarea id="stylus-simulated-textarea" oninput="processStylusHandwritingOCR(this.value)" placeholder="Write here... (e.g., Name: Fatima Bello, Age: 28, Sex: Female, Occupation: Teacher, Allergies: Penicillin, Conditions: None)" rows="3" class="w-full bg-[#0f1319] text-teal-400 border border-gray-700 rounded-lg p-3 text-sm font-mono focus:outline-none focus:border-teal-500 handwritten text-xl tracking-wide"></textarea>
+          <p class="text-[10px] text-gray-500 font-sans italic mt-1">Type keywords like "Name: ", "Age: ", "Sex: Female" to trigger the translucent teal glance verification values overhead!</p>
         </div>
         
         <button onclick="commitNewPatientProfileData()" class="w-full bg-[#22c55e] hover:bg-emerald-600 text-white font-black text-xl py-4 rounded-xl shadow-xl transition-all uppercase tracking-widest cursor-pointer mt-4">Save Patient Sheet</button>
       </div>
     </div>
 
-    <div id="new-patient-success-overlay" class="absolute inset-0 bg-[#dcfce7] border-8 border-[#bbf7d0] z-50 hidden flex-col items-center justify-center p-6 text-center">
+    <div id="new-patient-success-overlay" class="absolute inset-0 bg-[#dcfce7] border-8 border-[#bbf7d0] z-50 hidden flex flex-col items-center justify-center p-6 text-center">
       <div class="w-24 h-24 rounded-full bg-[#22c55e] text-white flex items-center justify-center shadow-lg mb-4">
         <svg class="w-12 h-12 stroke-current fill-none stroke-[3.5]" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
       </div>
@@ -274,7 +271,6 @@
     </div>
   </div>
 
-  <!-- 3. RETURNING PATIENT FULL SCREEN SEARCH MODAL -->
   <div id="modal-returning-patient" class="fixed inset-0 bg-[#0f1319] z-50 hidden flex flex-col p-6">
     <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-6">
       <h2 class="text-xl font-black uppercase text-white tracking-wider flex items-center gap-2">
@@ -311,7 +307,6 @@
     </div>
   </div>
 
-  <!-- 4. PAPER PATIENT CAMERA VIEW FINDER MODAL -->
   <div id="modal-paper-patient" class="fixed inset-0 bg-zinc-950 z-50 hidden flex flex-col justify-between">
     <div class="bg-zinc-900 border-b border-zinc-800 p-4 flex justify-between items-center text-white">
       <div>
@@ -351,7 +346,7 @@
 
 
   <script>
-    // Local memory simulation variables
+    // Local memory state simulation variables
     let assistantDb = { "999": { name: "Sara Jenkins", role: "Nurse", sex: "Female" } };
     let capturedPageCount = 0;
 
@@ -361,8 +356,8 @@
       const liveTimeEl = document.getElementById('live-time');
       function update() {
         const now = new Date();
-        liveDateEl.textContent = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
-        liveTimeEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+        if(liveDateEl) liveDateEl.textContent = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+        if(liveTimeEl) liveTimeEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
       }
       update(); setInterval(update, 60000);
     }
@@ -370,19 +365,32 @@
     // --- Modal View Switchers Controllers ---
     function openModal(id) {
       const modal = document.getElementById(id);
+      if(!modal) return;
       modal.classList.remove('hidden');
+      if (id === 'modal-new-patient' || id === 'modal-returning-patient' || id === 'modal-paper-patient') {
+        modal.classList.add('flex');
+      }
       if(id === 'sheet-assistant-onboarding') {
-        setTimeout(() => modal.querySelector('.w-full').classList.remove('translate-y-full'), 10);
+        setTimeout(() => {
+          const innerEl = modal.querySelector('.w-full');
+          if(innerEl) innerEl.classList.remove('translate-y-full');
+        }, 10);
       }
     }
     
     function closeModal(id) {
       const modal = document.getElementById(id);
+      if(!modal) return;
       if(id === 'sheet-assistant-onboarding') {
-        modal.querySelector('.w-full').classList.add('translate-y-full');
-        setTimeout(() => modal.classList.add('hidden'), 300);
+        const innerEl = modal.querySelector('.w-full');
+        if(innerEl) innerEl.classList.add('translate-y-full');
+        setTimeout(() => {
+          modal.classList.add('hidden');
+          modal.classList.remove('flex');
+        }, 300);
       } else {
         modal.classList.add('hidden');
+        modal.classList.remove('flex');
       }
     }
     
@@ -396,12 +404,14 @@
     function toggleAccordion() {
       const content = document.getElementById('accordion-content');
       const arrow = document.getElementById('accordion-arrow');
+      if(!content) return;
+      
       if (content.classList.contains('hidden')) {
         content.classList.remove('hidden');
-        arrow.classList.add('rotate-180');
+        if(arrow) arrow.style.transform = 'rotate(180deg)';
       } else {
         content.classList.add('hidden');
-        arrow.classList.remove('rotate-180');
+        if(arrow) arrow.style.transform = 'rotate(0deg)';
       }
     }
 
@@ -409,6 +419,7 @@
     function executeAssistantSearch() {
       const query = document.getElementById('assistant-search-input').value.trim();
       const resultsFrame = document.getElementById('assistant-search-results');
+      if(!resultsFrame) return;
       resultsFrame.classList.remove('hidden');
       
       if(assistantDb[query]) {
@@ -437,15 +448,19 @@
     }
 
     function revealVoiceScript() {
-      document.getElementById('voiceprint-script-box').classList.remove('hidden');
+      const box = document.getElementById('voiceprint-script-box');
+      if(box) box.classList.remove('hidden');
     }
 
     function simulateVoiceRecording() {
       const id = document.getElementById('reg-asst-id').value;
       const fname = document.getElementById('reg-asst-fname').value.trim() || "Anonymous";
       const lname = document.getElementById('reg-asst-lname').value.trim() || "Assistant";
-      const sex = document.querySelector('input[name="reg-asst-sex"]:checked').value;
-      const role = document.querySelector('input[name="reg-asst-role"]:checked').value;
+      const sexElement = document.querySelector('input[name="reg-asst-sex"]:checked');
+      const roleElement = document.querySelector('input[name="reg-asst-role"]:checked');
+      
+      const sex = sexElement ? sexElement.value : "Female";
+      const role = roleElement ? roleElement.value : "Nurse";
       
       assistantDb[id] = { name: `${fname} ${lname}`, role: role, sex: sex };
       
@@ -457,19 +472,20 @@
 
     function selectExistingAssistant(id) {
       let asst = assistantDb[id];
-      let firstName = asst.name.split(' ')[0];
+      let firstName = asst.name.split(' ');
       closeModal('sheet-assistant-onboarding');
-      updateActiveAssistantDisplay(firstName, asst.sex);
+      updateActiveAssistantDisplay(firstName[0], asst.sex);
     }
 
     function updateActiveAssistantDisplay(firstName, sex) {
       const frame = document.getElementById('active-assistant-display');
+      if(!frame) return;
       const avatarSvg = sex === 'Female' 
         ? `<svg class="w-8 h-8 text-pink-400 mt-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`
         : `<svg class="w-8 h-8 text-blue-400 mt-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
       
       frame.innerHTML = `
-        <div class="flex items-center justify-between w-full bg-slate-900 border border-emerald-500/30 rounded-xl p-3 w-full animate-fade-in">
+        <div class="flex items-center justify-between w-full bg-slate-900 border border-emerald-500/30 rounded-xl p-3 w-full">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 overflow-hidden flex items-center justify-center">${avatarSvg}</div>
             <div>
@@ -477,7 +493,7 @@
               <p class="text-[10px] text-emerald-400 font-mono tracking-widest uppercase font-bold mt-0.5">Active Assistant</p>
             </div>
           </div>
-          <span class="text-lg bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/40 font-bold">✅</span>
+          <span class="text-sm bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/40 font-bold">✅ Active</span>
         </div>`;
     }
 
@@ -513,29 +529,28 @@
       }
     }
 
-    UX_commitNewPatientProfileData = function() {
+    function commitNewPatientProfileData() {
       const name = document.getElementById('ghost-name').textContent;
       const overlay = document.getElementById('new-patient-success-overlay');
+      if(!overlay) return;
       document.getElementById('success-patient-slug').textContent = `Target Reference: ${name}`;
       
       overlay.classList.remove('hidden');
       
-      // Strict 600ms transition state layout lock enforcement
+      // Strict 600ms transition layout lock enforcement parameter rule
       setTimeout(() => {
         overlay.classList.add('hidden');
         closeModal('modal-new-patient');
         loadDiagnosisHelpDashboardView();
       }, 600);
     }
-    
-    // global overwrite fix
-    window.commitNewPatientProfileData = UX_commitNewPatientProfileData;
 
     // --- Returning Patient Operations Lookup System Layouts ---
     function executePatientLookup() {
       const code = document.getElementById('patient-lookup-input').value.trim();
       const failBlock = document.getElementById('lookup-fail-actions');
       const snackbar = document.getElementById('returning-patient-snackbar');
+      if(!failBlock || !snackbar) return;
       
       failBlock.classList.add('hidden');
       
@@ -568,6 +583,7 @@
     function executeDocumentCaptureSnap() {
       capturedPageCount++;
       const tray = document.getElementById('document-thumb-tray');
+      if(!tray) return;
       
       if(capturedPageCount === 1) tray.innerHTML = ''; // wipe text placeholder
       
@@ -577,6 +593,7 @@
       tray.appendChild(thumb);
       
       const toast = document.getElementById('scanner-toast');
+      if(!toast) return;
       if(capturedPageCount === 1) {
         toast.textContent = `💾 SCANNING PAGE 1... PROCESSED`;
       } else {
@@ -595,21 +612,35 @@
     // --- Destination Routing Engine Management Layout Views ---
     function loadDiagnosisHelpDashboardView() {
       document.getElementById('main-dashboard').classList.add('hidden');
-      document.getElementById('diagnosis-help-dashboard').classList.remove('hidden');
-      document.getElementById('diagnosis-help-dashboard').classList.add('flex');
+      
+      const diagnosticDashboard = document.getElementById('diagnosis-help-dashboard');
+      if(diagnosticDashboard) {
+        diagnosticDashboard.classList.remove('hidden');
+        diagnosticDashboard.classList.add('flex');
+      }
     }
 
+    // Reset workspace parameters mapping engine
     function resetWorkspace() {
       document.getElementById('stylus-simulated-textarea').value = '';
       document.getElementById('patient-lookup-input').value = '';
       document.getElementById('assistant-search-input').value = '';
-      document.getElementById('assistant-search-results').innerHTML = '';
-      document.getElementById('assistant-search-results').classList.add('hidden');
-      document.getElementById('document-thumb-tray').innerHTML = `<div class="text-xs text-zinc-600 font-mono italic flex items-center justify-center w-full">Empty tray. Capture pages to stack...</div>`;
+      
+      const resFrame = document.getElementById('assistant-search-results');
+      if(resFrame) {
+        resFrame.innerHTML = '';
+        resFrame.classList.add('hidden');
+      }
+      
+      const tray = document.getElementById('document-thumb-tray');
+      if(tray) tray.innerHTML = `<div class="text-xs text-zinc-600 font-mono italic flex items-center justify-center w-full">Empty tray. Capture pages to stack...</div>`;
       capturedPageCount = 0;
       
-      document.getElementById('diagnosis-help-dashboard').classList.remove('flex');
-      document.getElementById('diagnosis-help-dashboard').classList.add('hidden');
+      const diagDashboard = document.getElementById('diagnosis-help-dashboard');
+      if(diagDashboard) {
+        diagDashboard.classList.remove('flex');
+        diagDashboard.classList.add('hidden');
+      }
       document.getElementById('main-dashboard').classList.remove('hidden');
     }
 
