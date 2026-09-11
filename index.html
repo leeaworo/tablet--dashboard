@@ -3,44 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>St. Jude's General Hospital Dashboard</title>
-  <!-- Tailwind CSS CDN -->
+  <title>St. Jude's Clinical Assistant Workspace</title>
+  <!-- Tailwind CSS v4 CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  <!-- Google Fonts for crisp clean look -->
+  <!-- Google Fonts for crisp clean look and handwritten simulation -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
+    body { font-family: 'Inter', sans-serif; }
+    .handwritten { font-family: 'Kalam', cursive; }
+    /* Lined paper simulation canvas styles */
+    .lined-paper {
+      background-color: #f8fafc;
+      background-image: linear-gradient(#e0f2fe 1px, transparent 1px);
+      background-size: 100% 2.5rem;
+      line-height: 2.5rem;
     }
   </style>
 </head>
-<body class="bg-[#0f1319] text-[#e2e8f0] min-h-screen p-4 flex items-center justify-center">
+<body class="bg-[#0f1319] text-[#e2e8f0] min-h-screen p-4 flex items-center justify-center overflow-x-hidden selection:bg-teal-500/30">
 
-  <!-- Main Tablet Container: Restricted maximum width for a 9-inch physical look, responsive to orientation changes -->
-  <div class="w-full max-w-2xl bg-[#141b22] border border-gray-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between min-h-[85vh]">
-    
-    <!-- Top Meta Container (Orientation Switcher Support) -->
+  <!-- ==================== MAIN VIEWPORT INTERFACE ==================== -->
+  <div id="main-dashboard" class="w-full max-w-2xl bg-[#141b22] border border-gray-800 rounded-2xl p-6 shadow-2xl flex flex-col justify-between min-h-[85vh] transition-all duration-300">
     <div class="landscape:grid landscape:grid-cols-2 landscape:gap-6 space-y-6 landscape:space-y-0">
       
-      <!-- Left Block / Portrait Top Part -->
+      <!-- Left Column / Block -->
       <div class="space-y-6">
-        <!-- Header -->
         <header class="flex justify-between items-start border-b border-gray-800 pb-4">
           <div>
-            <h1 class="text-xl font-extrabold tracking-wide uppercase text-white leading-tight">
-              St. Jude's General Hospital
-            </h1>
-            <p class="text-xs text-gray-500 font-mono mt-0.5">ultra-bold titleLarge, 32sp</p>
-            
-            <!-- Real-time dynamic date/time strings updated by JavaScript -->
-            <div class="mt-4 text-sm font-semibold tracking-wide text-gray-300">
-              <span id="live-date">JUNE 15, 2026</span>
-              <span class="block text-lg font-bold text-white mt-0.5" id="live-time">11:15 AM</span>
+            <h1 class="text-xl font-extrabold tracking-wide uppercase text-white leading-tight">St. Jude's General Hospital</h1>
+            <p class="text-xs text-gray-500 font-mono mt-0.5">Clinical Workstation v2.0</p>
+            <div class="mt-4 text-sm font-semibold text-gray-300">
+              <span id="live-date">SEPTEMBER 10, 2026</span>
+              <span class="block text-lg font-bold text-white mt-0.5" id="live-time">07:07 PM</span>
             </div>
           </div>
-
           <div class="text-right">
             <h2 class="text-sm font-bold tracking-wide uppercase text-gray-300">Dr. Alex Mercer</h2>
             <div class="flex items-center justify-end gap-1.5 mt-1">
@@ -50,170 +48,573 @@
           </div>
         </header>
 
-        <!-- Patient Overview Action Section -->
+        <!-- Patient Entry Core Trigger Actions -->
         <section class="bg-[#1c242c] border border-gray-800 rounded-xl p-4 space-y-3 shadow-inner">
-          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Patient Overview</h3>
-          
-          <!-- New Patient Button -->
-          <button class="w-full bg-[#22c55e] hover:bg-emerald-600 text-white font-black text-lg py-3.5 px-5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-3 uppercase tracking-wider group active:scale-95">
-            <svg class="w-5 h-5 fill-current transform group-hover:translate-x-0.5 transition-transform" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
+          <h3 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Patient Management</h3>
+          <button onclick="openModal('modal-new-patient')" class="w-full bg-[#22c55e] hover:bg-emerald-600 text-white font-black text-lg py-3.5 px-5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-3 uppercase tracking-wider active:scale-[0.98] cursor-pointer">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
             New Patient
           </button>
-
-          <!-- Returning Patient Button -->
-          <button class="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-black text-lg py-3.5 px-5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-3 uppercase tracking-wider group active:scale-95">
-            <svg class="w-5 h-5 stroke-current stroke-[3.5] fill-none" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
-            </svg>
+          <button onclick="openModal('modal-returning-patient')" class="w-full bg-[#2563eb] hover:bg-blue-700 text-white font-black text-lg py-3.5 px-5 rounded-xl shadow-lg transition-all flex items-center justify-center gap-3 uppercase tracking-wider active:scale-[0.98] cursor-pointer">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
             Returning Patient
           </button>
-
-          <!-- Chirp Notification / Alert Area -->
-          <button class="w-full bg-transparent border-2 border-[#ea580c] hover:bg-[#ea580c]/10 text-[#ea580c] font-black text-lg py-3 px-5 rounded-xl transition-all flex items-center justify-center gap-3 uppercase tracking-wider active:scale-95">
-            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-              <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
-            </svg>
-            Chirp
-          </button>
         </section>
       </div>
 
-      <!-- Right Block / Portrait Bottom Part -->
+      <!-- Right Column / Block -->
       <div class="space-y-6">
-        <!-- Consultation Metrics (Collapsible Accordion Component) -->
-        <section class="bg-transparent border border-gray-700 rounded-xl overflow-hidden shadow-sm">
-          <button id="accordion-toggle" class="w-full flex items-center justify-between p-4 bg-[#1a222a]/50 hover:bg-[#1a222a] transition-colors text-left focus:outline-none">
-            <span class="text-xs font-bold text-gray-300 uppercase tracking-widest">
-              Consultation Metrics <span class="text-[10px] text-gray-500 font-normal lowercase">(M3 Accordion)</span>
-            </span>
+        <!-- 1. Consultation Metrics Card (Whole Card Tapable Accordion) -->
+        <section onclick="toggleAccordion()" class="bg-[#171f26] border border-gray-700 rounded-xl p-4 shadow-sm cursor-pointer select-none transition-all hover:border-gray-500">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-gray-300 uppercase tracking-widest">Consultation Metrics</span>
             <svg id="accordion-arrow" class="w-4 h-4 text-gray-400 transform transition-transform duration-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
-          </button>
+          </div>
           
-          <div id="accordion-content" class="p-4 pt-1 transition-all duration-300 ease-in-out">
-            <div class="flex items-baseline gap-4 mt-1">
-              <span class="text-6xl font-black tracking-tight text-white">24</span>
-              <div>
-                <div class="flex items-center text-emerald-500 font-bold text-sm">
-                  <svg class="w-3.5 h-3.5 fill-current mr-0.5" viewBox="0 0 24 24">
-                    <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/>
-                  </svg>
-                  +3.6%
-                </div>
-                <p class="text-[11px] text-gray-500 font-mono leading-none">bodyMedium, 16sp</p>
-              </div>
+          <!-- Extended Content Areas -->
+          <div id="accordion-content" class="mt-3 space-y-3 hidden transition-all">
+            <div class="flex items-baseline gap-3">
+              <span class="text-5xl font-black tracking-tight text-white">24</span>
+              <span class="text-xs font-bold text-emerald-500 flex items-center bg-emerald-500/10 px-1.5 py-0.5 rounded">↑ +3.6% TODAY</span>
             </div>
-            <p class="text-xs font-bold text-gray-400 mt-2 tracking-wider">TOTAL 今日</p>
+            <div class="grid grid-cols-2 gap-2 border-t border-gray-800 pt-2.5 text-xs">
+              <div><p class="text-gray-500">This Week</p><p class="text-sm font-bold text-gray-200">142 Cases</p></div>
+              <div><p class="text-gray-500">Monthly Avg</p><p class="text-sm font-bold text-gray-200">580 Cases</p></div>
+            </div>
           </div>
         </section>
 
-        <!-- Assistant Onboarding (Dynamic Grid Section) -->
-        <section class="bg-transparent border border-gray-700 rounded-xl p-4 shadow-sm">
+        <!-- 2. Assistant Onboarding Card (Whole Card Tapable Trigger) -->
+        <section onclick="openModal('sheet-assistant-onboarding')" class="bg-[#171f26] border border-gray-700 rounded-xl p-4 shadow-sm cursor-pointer hover:border-gray-500 transition-all select-none">
           <div class="flex justify-between items-center mb-3">
             <div class="flex items-center gap-1.5">
-              <!-- Star Sparkle Icon -->
-              <svg class="w-4 h-4 text-white fill-current" viewBox="0 0 24 24">
-                <path d="M12 2l2.4 7.2L22 10l-6 4.8L18.4 22 12 17.2 5.6 22 8 14.8 2 10l7.6-.8z"/>
-              </svg>
-              <h3 class="text-xs font-bold text-white uppercase tracking-wider">Assistant Onboarding</h3>
+              <svg class="w-4 h-4 text-teal-400 fill-current" viewBox="0 0 24 24"><path d="M12 2l2.4 7.2L22 10l-6 4.8L18.4 22 12 17.2 5.6 22 8 14.8 2 10l7.6-.8z"/></svg>
+              <h3 class="text-xs font-bold text-white uppercase tracking-wider">Assistant Status</h3>
             </div>
-            <span class="text-[11px] text-gray-400 font-medium">Onboard New</span>
+            <span class="text-[11px] text-gray-400 bg-gray-800 px-2 py-0.5 rounded font-mono">Tap to Manage</span>
           </div>
 
-          <!-- Cards Grid Container -->
-          <div class="grid grid-cols-3 gap-3">
-            <!-- Add New Onboarding Action -->
-            <div class="bg-[#171f26] border border-gray-700 rounded-xl p-3 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-gray-800/50 hover:border-gray-500 transition-all group aspect-square">
-              <div class="w-12 h-12 rounded-full border-2 border-dashed border-gray-500 flex items-center justify-center group-hover:scale-105 transition-transform">
-                <svg class="w-6 h-6 text-gray-400 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-              </div>
-              <span class="text-xs font-black text-gray-400 uppercase tracking-widest mt-2 group-hover:text-white">New</span>
-            </div>
-
-            <!-- Profile Block: Sara M. -->
-            <div class="bg-[#171f26] border border-gray-700 rounded-xl p-3 flex flex-col items-center justify-center text-center aspect-square">
-              <div class="w-12 h-12 rounded-full bg-gray-700 border border-gray-600 overflow-hidden flex items-center justify-center">
-                <!-- SVG Avatar Replacement for Woman Vector Component -->
-                <svg class="w-10 h-10 text-gray-300 mt-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-              </div>
-              <span class="text-xs font-black text-gray-200 uppercase tracking-widest mt-2 truncate w-full">Sara M.</span>
-            </div>
-
-            <!-- Profile Block: John D. -->
-            <div class="bg-[#171f26] border border-gray-700 rounded-xl p-3 flex flex-col items-center justify-center text-center aspect-square">
-              <div class="w-12 h-12 rounded-full bg-gray-700 border border-gray-600 overflow-hidden flex items-center justify-center">
-                <!-- SVG Avatar Replacement for Man Vector Component -->
-                <svg class="w-10 h-10 text-gray-300 mt-2" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-              </div>
-              <span class="text-xs font-black text-gray-200 uppercase tracking-widest mt-2 truncate w-full">John D.</span>
-            </div>
+          <!-- Dynamic Output Target Frame Container for Active Assistant -->
+          <div id="active-assistant-display" class="bg-[#11161b] rounded-xl p-3 border border-dashed border-gray-800 flex items-center justify-center min-h-[76px]">
+            <p class="text-xs text-gray-500 uppercase tracking-widest font-semibold flex items-center gap-2">
+              <span class="w-2 h-2 bg-amber-500 rounded-full animate-ping"></span> No Active Assistant
+            </p>
           </div>
         </section>
       </div>
-
     </div>
-
-    <!-- Interface Footer Rules -->
-    <footer class="text-center pt-6 border-t border-gray-800/50 mt-6">
-      <p class="text-[10px] text-gray-600 tracking-wide">
-        All rights reserved. Terms and conditions apply.
-      </p>
-    </footer>
-
+    <footer class="text-center pt-6 border-t border-gray-800/50 mt-6"><p class="text-[10px] text-gray-600 tracking-wide">All rights reserved. Encryption active.</p></footer>
   </div>
 
-  <!-- Interactive Logic Engine -->
+  <!-- ==================== DIAGNOSIS HELP DASHBOARD PANEL ==================== -->
+  <div id="diagnosis-help-dashboard" class="w-full max-w-4xl bg-[#141b22] border border-emerald-500/30 rounded-2xl p-8 shadow-2xl hidden min-h-[70vh] flex-col justify-between transition-all duration-300">
+    <div class="border-b border-gray-800 pb-4 flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-black text-white tracking-wide uppercase flex items-center gap-2">
+          <span class="w-3 h-3 bg-emerald-500 rounded-full"></span> Diagnosis Help Dashboard
+        </h1>
+        <p class="text-xs text-gray-400 mt-1">Real-time handwriting parsing engine active</p>
+      </div>
+      <button onclick="resetWorkspace()" class="text-xs bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold px-4 py-2 rounded-lg transition-all cursor-pointer">Return to Hub</button>
+    </div>
+    <div class="my-12 flex flex-col items-center justify-center text-center p-8 border border-dashed border-gray-800 rounded-2xl bg-[#11171d]/60">
+      <svg class="w-16 h-16 text-emerald-500/40 mb-4 animate-pulse" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.03 0 1.9.693 2.166 1.638m-7.377 2.48a.75.75 0 011.06-.02L12 7.168l1.157-1.157a.75.75 0 111.06 1.06l-1.687 1.687a.75.75 0 01-1.06 0L9.828 6.78a.75.75 0 01.02-1.06zM7.5 21h6a2.25 2.25 0 002.25-2.25V8.608c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08M7.5 21a2.25 2.25 0 01-2.25-2.25V6.108c0-1.135.845-2.098 1.976-2.192a48.424 48.424 0 011.123-.08M7.5 21h6.041m-6.041 0a2.25 2.25 0 002.25-2.25v-1.5c0-.621.504-1.125 1.125-1.125h.75c.621 0 1.125.504 1.125 1.125v1.5m-.041 0a2.25 2.25 0 002.25-2.25v-1.5c0-.621.504-1.125 1.125-1.125h.75c.621 0 1.125.504 1.125 1.125v1.5z"/></svg>
+      <h3 class="text-xl font-bold text-white mb-2">Diagnosis Help Dashboard</h3>
+      <p class="text-sm text-gray-500 max-w-sm">Clinical decision support logic, vital trend analytics, and diagnostics recommendation grids successfully loaded here.</p>
+    </div>
+    <div class="w-full bg-[#18222c] h-2 rounded-full overflow-hidden"><div class="bg-emerald-500 h-full w-1/3 animate-pulse"></div></div>
+  </div>
+
+  <!-- ==================== INTERFACE MODALS ==================== -->
+
+  <!-- 1. ASSISTANT ONBOARDING M3 BOTTOM SHEET MODAL -->
+  <div id="sheet-assistant-onboarding" class="fixed inset-0 bg-black/60 z-50 hidden backdrop-blur-xs flex justify-center items-end" onclick="closeModalOnOutsideClick(event, 'sheet-assistant-onboarding')">
+    <div class="w-full max-w-2xl bg-[#141b22] border-t border-gray-700 rounded-t-3xl p-6 shadow-2xl max-h-[85vh] overflow-y-auto transform translate-y-full transition-transform duration-300" onclick="event.stopPropagation()">
+      <div class="w-12 h-1.5 bg-gray-600 rounded-full mx-auto mb-6"></div>
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-black uppercase text-white tracking-wider">Assistant Query System</h2>
+        <button onclick="closeModal('sheet-assistant-onboarding')" class="text-gray-400 hover:text-white font-bold text-xs uppercase bg-gray-800 px-3 py-1.5 rounded-lg cursor-pointer">Close</button>
+      </div>
+
+      <div class="space-y-4">
+        <div class="flex gap-2">
+          <input type="text" id="assistant-search-input" placeholder="Enter Assistant ID Code (e.g., 999)..." class="flex-1 bg-[#1a232d] border border-gray-700 rounded-xl px-4 py-3 text-white font-mono focus:outline-none focus:border-teal-500 text-sm">
+          <button onclick="executeAssistantSearch()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-6 rounded-xl transition-all uppercase text-xs tracking-wider cursor-pointer">Search</button>
+        </div>
+        <div id="assistant-search-results" class="hidden border border-gray-800 rounded-xl p-4 bg-[#11171d]"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modal-assistant-registration" class="fixed inset-0 bg-black/70 z-50 hidden backdrop-blur-sm flex justify-center items-center p-4" onclick="closeModalOnOutsideClick(event, 'modal-assistant-registration')">
+    <div class="w-full max-w-md bg-[#141b22] border border-gray-700 rounded-2xl p-6 shadow-2xl transition-all duration-300" onclick="event.stopPropagation()">
+      <h2 class="text-lg font-black uppercase text-white tracking-wide border-b border-gray-800 pb-3 mb-4">Register New Assistant Profile</h2>
+      
+      <div class="space-y-4 text-sm">
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">Assistant ID Code</label>
+          <input type="text" id="reg-asst-id" readonly class="w-full bg-[#1c252f] border border-gray-800 rounded-xl px-4 py-2.5 text-gray-400 font-mono focus:outline-none">
+        </div>
+        
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">First Name</label>
+            <input type="text" id="reg-asst-fname" placeholder="Sara" class="w-full bg-[#1a232d] border border-gray-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-teal-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">Last Name</label>
+            <input type="text" id="reg-asst-lname" placeholder="Jenkins" class="w-full bg-[#1a232d] border border-gray-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-teal-500">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">Biological Sex</label>
+            <div class="flex gap-4 mt-2">
+              <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="reg-asst-sex" value="Male" class="accent-teal-500"> Male</label>
+              <label class="flex items-center gap-2 cursor-pointer"><input type="radio" name="reg-asst-sex" value="Female" checked class="accent-teal-500"> Female</label>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-gray-400 mb-1 uppercase tracking-wider">Clinical Designation</label>
+          <div class="grid grid-cols-3 gap-2 mt-1">
+            <label class="flex items-center justify-center p-2 bg-[#1a232d] rounded-xl border border-gray-700 cursor-pointer text-center text-xs has-[:checked]:border-teal-500 has-[:checked]:bg-teal-500/10">
+              <input type="radio" name="reg-asst-role" value="Nurse" checked class="hidden"> Nurse
+            </label>
+            <label class="flex items-center justify-center p-2 bg-[#1a232d] rounded-xl border border-gray-700 cursor-pointer text-center text-xs has-[:checked]:border-teal-500 has-[:checked]:bg-teal-500/10">
+              <input type="radio" name="reg-asst-role" value="Health-worker" class="hidden"> Health-worker
+            </label>
+            <label class="flex items-center justify-center p-2 bg-[#1a232d] rounded-xl border border-gray-700 cursor-pointer text-center text-xs has-[:checked]:border-teal-500 has-[:checked]:bg-teal-500/10">
+              <input type="radio" name="reg-asst-role" value="Midwife" class="hidden"> Midwife
+            </label>
+          </div>
+        </div>
+
+        <div class="border-t border-gray-800 pt-4 flex flex-col items-center justify-center">
+          <button onclick="revealVoiceScript()" class="w-12 h-12 rounded-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center shadow-lg transition-transform active:scale-95 cursor-pointer">
+            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+          </button>
+          <p class="text-[11px] text-gray-500 mt-2 uppercase font-bold tracking-widest">Tap mic icon to load voice print consent</p>
+        </div>
+
+        <div id="voiceprint-script-box" class="hidden bg-slate-900 border border-teal-500/30 rounded-xl p-4 space-y-3">
+          <p class="text-[11px] text-teal-400 font-mono leading-relaxed bg-teal-950/40 p-2.5 rounded border border-teal-900">
+            "I hereby confirm my clinical deployment validation parameters within this medical system. I authorize the secure local processing of this biometric acoustics verification sequence to authenticate my active session logs, support consultation charting frameworks, and protect clinical records stability rules. I verify that I am fully aware my voice print will be used continuously to aid consultation workflow tasks securely."
+          </p>
+          <button onclick="simulateVoiceRecording()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-4 rounded-xl uppercase text-xs tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer">
+            <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span> Start Recording Consent
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. NEW PATIENT FULL SCREEN BOTTOM SHEET MODAL -->
+  <div id="modal-new-patient" class="fixed inset-0 bg-[#0f1319] z-50 hidden flex flex-col">
+    <div class="h-[35%] bg-[#141b22] border-b border-gray-800 p-4 flex flex-col justify-between">
+      <div class="flex justify-between items-center">
+        <span class="text-xs font-bold text-teal-400 uppercase tracking-widest flex items-center gap-1.5">
+          <span class="w-2 h-2 bg-teal-500 rounded-full animate-pulse"></span> Split Grid Interface: Live OCR Engine Ghost Text
+        </span>
+        <button onclick="closeModal('modal-new-patient')" class="text-gray-400 hover:text-white font-black text-xs bg-gray-800 px-3 py-1.5 rounded-lg uppercase tracking-wider cursor-pointer">Cancel</button>
+      </div>
+      
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mt-2">
+        <div class="bg-[#19222c] border border-gray-800 rounded-lg p-2 min-h-[56px]">
+          <span class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">Patient Name</span>
+          <span id="ghost-name" class="text-xs font-extrabold text-[#0D9488]/50 block mt-1 tracking-wide truncate uppercase">—</span>
+        </div>
+        <div class="bg-[#19222c] border border-gray-800 rounded-lg p-2 min-h-[56px]">
+          <span class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">Age Parameter</span>
+          <span id="ghost-age" class="text-xs font-extrabold text-[#0D9488]/50 block mt-1 tracking-wide uppercase">—</span>
+        </div>
+        <div class="bg-[#19222c] border border-gray-800 rounded-lg p-2 min-h-[56px]">
+          <span class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">Sex Profile</span>
+          <span id="ghost-sex" class="text-[11px] font-extrabold text-[#0D9488]/50 block mt-1 leading-tight uppercase">—</span>
+        </div>
+        <div class="bg-[#19222c] border border-gray-800 rounded-lg p-2 min-h-[56px]">
+          <span class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">Occupation</span>
+          <span id="ghost-job" class="text-xs font-extrabold text-[#0D9488]/50 block mt-1 tracking-wide truncate uppercase">—</span>
+        </div>
+        <div class="bg-[#19222c] border border-gray-800 rounded-lg p-2 min-h-[56px]">
+          <span class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">Allergies</span>
+          <span id="ghost-allergies" class="text-xs font-extrabold text-[#0D9488]/50 block mt-1 tracking-wide truncate uppercase">—</span>
+        </div>
+        <div class="bg-[#19222c] border border-gray-800 rounded-lg p-2 min-h-[56px]">
+          <span class="block text-[10px] text-gray-500 font-bold uppercase tracking-wider">Medical Status</span>
+          <span id="ghost-conditions" class="text-xs font-extrabold text-[#0D9488]/50 block mt-1 tracking-wide truncate uppercase">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-1 lined-paper p-6 relative overflow-y-auto">
+      <div class="absolute top-2 right-4 text-[10px] font-mono text-blue-400 font-bold tracking-widest uppercase pointer-events-none">Stylus Canvas Lower Surface</div>
+      
+      <div class="max-w-xl mx-auto space-y-4 pt-4">
+        <div class="bg-[#1c242c] border border-gray-800 rounded-xl p-4 shadow-sm space-y-2">
+          <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest font-sans">Simulate Stylus Entry Input String:</label>
+          <textarea id="stylus-simulated-textarea" oninput="processStylusHandwritingOCR(this.value)" placeholder="Write here... (e.g., Name: Fatima Bello, Age: 28, Sex: Female, Occupation: Teacher, Allergies: Penicillin, Conditions: None)" rows="3" class="w-full bg-[#141b22] text-teal-400 border border-gray-700 rounded-lg p-3 text-sm font-mono focus:outline-none focus:border-teal-500 handwritten text-xl tracking-wide"></textarea>
+          <p class="text-[10px] text-gray-500 font-sans italic">Type keywords like "Name: ", "Age: ", "Sex: Female" to trigger the translucent teal glance verification values overhead!</p>
+        </div>
+        
+        <button onclick="commitNewPatientProfileData()" class="w-full bg-[#22c55e] hover:bg-emerald-600 text-white font-black text-xl py-4 rounded-xl shadow-xl transition-all uppercase tracking-widest cursor-pointer mt-4">Save Patient Sheet</button>
+      </div>
+    </div>
+
+    <div id="new-patient-success-overlay" class="absolute inset-0 bg-[#dcfce7] border-8 border-[#bbf7d0] z-50 hidden flex-col items-center justify-center p-6 text-center">
+      <div class="w-24 h-24 rounded-full bg-[#22c55e] text-white flex items-center justify-center shadow-lg mb-4">
+        <svg class="w-12 h-12 stroke-current fill-none stroke-[3.5]" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>
+      </div>
+      <h2 class="text-3xl font-black text-[#14532d] uppercase tracking-wide">Patient Data Captured</h2>
+      <p id="success-patient-slug" class="text-[#166534] font-mono font-bold mt-2 uppercase text-sm tracking-wider"></p>
+    </div>
+  </div>
+
+  <!-- 3. RETURNING PATIENT FULL SCREEN SEARCH MODAL -->
+  <div id="modal-returning-patient" class="fixed inset-0 bg-[#0f1319] z-50 hidden flex flex-col p-6">
+    <div class="flex justify-between items-center border-b border-gray-800 pb-4 mb-6">
+      <h2 class="text-xl font-black uppercase text-white tracking-wider flex items-center gap-2">
+        <svg class="w-5 h-5 text-blue-500 fill-current" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10H7v-2h10v2z"/></svg>
+        Returning Patient Registry
+      </h2>
+      <button onclick="closeModal('modal-returning-patient')" class="text-gray-400 hover:text-white font-bold text-xs uppercase bg-gray-800 px-3 py-1.5 rounded-lg cursor-pointer">Back to Hub</button>
+    </div>
+
+    <div class="flex-1 flex flex-col items-center justify-center max-w-lg mx-auto w-full space-y-6">
+      <div class="w-full space-y-2">
+        <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest text-center">Enter Patient ID Code Details</label>
+        <div class="flex gap-2">
+          <input type="text" id="patient-lookup-input" placeholder="Enter ID (e.g., P-100 or write any arbitrary string)..." class="flex-1 bg-[#141b22] border-2 border-gray-800 rounded-xl px-4 py-3.5 text-white font-mono text-center text-lg focus:outline-none focus:border-blue-500">
+          <button onclick="executePatientLookup()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 rounded-xl uppercase text-xs tracking-wider cursor-pointer transition-all">Lookup</button>
+        </div>
+      </div>
+
+      <div id="lookup-fail-actions" class="hidden w-full bg-red-950/30 border border-red-500/20 rounded-xl p-4 text-center space-y-3">
+        <p class="text-xs text-red-400 font-semibold">⚠️ Patient ID Reference not found in local database registry</p>
+        <div class="flex gap-3 justify-center text-xs font-bold">
+          <button onclick="triggerLookupFallbackRoute('new')" class="text-teal-400 hover:underline bg-teal-950/50 px-3 py-2 rounded-lg border border-teal-900 cursor-pointer">Onboard New Patient</button>
+          <button onclick="triggerLookupFallbackRoute('paper')" class="text-amber-400 hover:underline bg-amber-950/50 px-3 py-2 rounded-lg border border-amber-900 cursor-pointer">Onboard Paper Patient</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="returning-patient-snackbar" class="w-full bg-[#1e3a8a] border-t-4 border-blue-500 p-4 fixed bottom-0 left-0 right-0 transform translate-y-full transition-transform duration-300 shadow-2xl flex items-center justify-between z-50">
+      <div class="flex items-center gap-3">
+        <span class="w-2 h-2 rounded-full bg-blue-400 animate-ping"></span>
+        <p id="snackbar-text-field" class="text-sm font-mono font-bold text-blue-100 uppercase tracking-wider"></p>
+      </div>
+      <span class="text-[10px] bg-blue-900 text-blue-300 font-bold px-2 py-0.5 rounded font-mono">FAST-TRACK ACTIVE</span>
+    </div>
+  </div>
+
+  <!-- 4. PAPER PATIENT CAMERA VIEW FINDER MODAL -->
+  <div id="modal-paper-patient" class="fixed inset-0 bg-zinc-950 z-50 hidden flex flex-col justify-between">
+    <div class="bg-zinc-900 border-b border-zinc-800 p-4 flex justify-between items-center text-white">
+      <div>
+        <h3 class="text-sm font-black uppercase tracking-widest flex items-center gap-2 text-amber-400">
+          <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span> Intelligent Document Scanner Viewfinder
+        </h3>
+        <p class="text-[10px] text-zinc-500 font-mono mt-0.5">Teal Intelligent Edge Framing Box Active</p>
+      </div>
+      <button onclick="finalizePaperScanningSequence()" class="bg-teal-600 hover:bg-teal-700 text-white font-black text-xs px-5 py-2 rounded-xl uppercase tracking-wider transition-all cursor-pointer">Finish</button>
+    </div>
+
+    <div class="flex-1 flex items-center justify-center p-4 bg-zinc-950">
+      <div id="viewfinder-edge-frame" class="w-full max-w-sm aspect-[3/4] border-[3px] border-[#0D9488] rounded-xl relative shadow-[0_0_40px_rgba(13,148,136,0.2)] transition-all duration-300 flex flex-col items-center justify-center text-center p-4">
+        <div class="absolute top-2 left-2 w-6 h-6 border-t-4 border-l-4 border-teal-400 rounded-tl pointer-events-none"></div>
+        <div class="absolute top-2 right-2 w-6 h-6 border-t-4 border-r-4 border-teal-400 rounded-tr pointer-events-none"></div>
+        <div class="absolute bottom-2 left-2 w-6 h-6 border-b-4 border-l-4 border-teal-400 rounded-bl pointer-events-none"></div>
+        <div class="absolute bottom-2 right-2 w-6 h-6 border-b-4 border-r-4 border-teal-400 rounded-br pointer-events-none"></div>
+        
+        <button onclick="executeDocumentCaptureSnap()" class="w-24 h-24 rounded-full bg-white/10 hover:bg-white/20 border-4 border-white flex items-center justify-center shadow-2xl group transition-all transform active:scale-95 cursor-pointer">
+          <div class="w-16 h-16 rounded-full bg-red-600 group-hover:bg-red-500 transition-colors shadow-inner flex items-center justify-center">
+            <svg class="w-6 h-6 text-white fill-current" viewBox="0 0 24 24"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2zm8 3a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z"/></svg>
+          </div>
+        </button>
+        <p class="text-[11px] text-zinc-400 font-bold uppercase tracking-widest mt-4 pointer-events-none">Align Document Sheet Inside Viewfinder Frame</p>
+      </div>
+    </div>
+
+    <div class="bg-zinc-900 border-t border-zinc-800 p-4">
+      <span class="block text-[10px] text-zinc-500 font-bold uppercase tracking-wider mb-2">Automatic Stacking Document Tray Array</span>
+      <div id="document-thumb-tray" class="flex gap-3 overflow-x-auto py-1 min-h-[64px]">
+        <div class="text-xs text-zinc-600 font-mono italic flex items-center justify-center w-full">Empty tray. Capture pages to stack...</div>
+      </div>
+    </div>
+
+    <div id="scanner-toast" class="fixed bottom-28 left-4 right-4 bg-zinc-900 border border-teal-500 text-teal-400 p-3 rounded-xl shadow-2xl font-mono text-xs uppercase tracking-wider text-center font-bold transform translate-y-32 transition-transform duration-300 z-50"></div>
+  </div>
+
+
   <script>
-    // 1. Live Time and Date simulation string configurations
-    function startLiveTime() {
+    // Local memory simulation variables
+    let assistantDb = { "999": { name: "Sara Jenkins", role: "Nurse", sex: "Female" } };
+    let capturedPageCount = 0;
+
+    // --- Dynamic Time Configuration Clock ---
+    function startLiveTimeTicker() {
       const liveDateEl = document.getElementById('live-date');
       const liveTimeEl = document.getElementById('live-time');
-      
-      function updateTime() {
+      function update() {
         const now = new Date();
-        
-        // Match UI formatting rule options
-        const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' };
-        const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
-        
-        liveDateEl.textContent = now.toLocaleDateString('en-US', dateOptions).toUpperCase();
-        liveTimeEl.textContent = now.toLocaleTimeString('en-US', timeOptions);
+        liveDateEl.textContent = now.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }).toUpperCase();
+        liveTimeEl.textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
       }
-      
-      updateTime();
-      setInterval(updateTime, 1000 * 60); // refresh every minute
+      update(); setInterval(update, 60000);
     }
 
-    // 2. M3 Accordion component interactive expand/collapse script actions
-    function setupAccordion() {
-      const toggleBtn = document.getElementById('accordion-toggle');
+    // --- Modal View Switchers Controllers ---
+    function openModal(id) {
+      const modal = document.getElementById(id);
+      modal.classList.remove('hidden');
+      if(id === 'sheet-assistant-onboarding') {
+        setTimeout(() => modal.querySelector('.w-full').classList.remove('translate-y-full'), 10);
+      }
+    }
+    
+    function closeModal(id) {
+      const modal = document.getElementById(id);
+      if(id === 'sheet-assistant-onboarding') {
+        modal.querySelector('.w-full').classList.add('translate-y-full');
+        setTimeout(() => modal.classList.add('hidden'), 300);
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+    
+    function closeModalOnOutsideClick(event, id) {
+      if (event.target === document.getElementById(id)) {
+        closeModal(id);
+      }
+    }
+
+    // --- Consultation Metrics Card Component Smooth Accordion Actions ---
+    function toggleAccordion() {
       const content = document.getElementById('accordion-content');
       const arrow = document.getElementById('accordion-arrow');
-
-      toggleBtn.addEventListener('click', () => {
-        if (content.classList.contains('hidden')) {
-          content.classList.remove('hidden');
-          arrow.classList.remove('rotate-180');
-        } else {
-          content.classList.add('hidden');
-          arrow.classList.add('rotate-180');
-        }
-      });
+      if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        arrow.classList.add('rotate-180');
+      } else {
+        content.classList.add('hidden');
+        arrow.classList.remove('rotate-180');
+      }
     }
 
-    // Initializer calls
+    // --- Assistant Biometric Onboarding Logic Processing ---
+    function executeAssistantSearch() {
+      const query = document.getElementById('assistant-search-input').value.trim();
+      const resultsFrame = document.getElementById('assistant-search-results');
+      resultsFrame.classList.remove('hidden');
+      
+      if(assistantDb[query]) {
+        let asst = assistantDb[query];
+        resultsFrame.innerHTML = `
+          <div class="flex justify-between items-center text-sm border-l-4 border-teal-500 pl-3 py-1 text-white">
+            <div>
+              <p class="font-mono font-bold text-gray-400">ID: ${query} | <span class="text-white font-sans">${asst.name}</span></p>
+              <p class="text-xs text-gray-500 font-medium tracking-wide mt-0.5">${asst.sex} — ${asst.role}</p>
+            </div>
+            <input type="checkbox" onchange="selectExistingAssistant('${query}')" class="w-5 h-5 rounded accent-teal-500 cursor-pointer">
+          </div>`;
+      } else {
+        resultsFrame.innerHTML = `
+          <div class="text-center py-2">
+            <p class="text-xs text-red-400 font-semibold mb-2">⚠️ No records match Assistant ID Code</p>
+            <button onclick="triggerAssistantRegistrationRoute('${query}')" class="text-teal-400 hover:underline font-bold text-xs uppercase bg-teal-950/40 border border-teal-900 px-3 py-1.5 rounded-lg cursor-pointer">Onboard New Assistant Link</button>
+          </div>`;
+      }
+    }
+
+    function triggerAssistantRegistrationRoute(inferredId) {
+      closeModal('sheet-assistant-onboarding');
+      document.getElementById('reg-asst-id').value = inferredId || "ASST-" + Math.floor(1000 + Math.random() * 9000);
+      setTimeout(() => openModal('modal-assistant-registration'), 350);
+    }
+
+    function revealVoiceScript() {
+      document.getElementById('voiceprint-script-box').classList.remove('hidden');
+    }
+
+    function simulateVoiceRecording() {
+      const id = document.getElementById('reg-asst-id').value;
+      const fname = document.getElementById('reg-asst-fname').value.trim() || "Anonymous";
+      const lname = document.getElementById('reg-asst-lname').value.trim() || "Assistant";
+      const sex = document.querySelector('input[name="reg-asst-sex"]:checked').value;
+      const role = document.querySelector('input[name="reg-asst-role"]:checked').value;
+      
+      assistantDb[id] = { name: `${fname} ${lname}`, role: role, sex: sex };
+      
+      alert("🎙️ Voice biometric consent engine validated successfully. Profile saved to voiceprint DB schema variables.");
+      
+      closeModal('modal-assistant-registration');
+      updateActiveAssistantDisplay(fname, sex);
+    }
+
+    function selectExistingAssistant(id) {
+      let asst = assistantDb[id];
+      let firstName = asst.name.split(' ')[0];
+      closeModal('sheet-assistant-onboarding');
+      updateActiveAssistantDisplay(firstName, asst.sex);
+    }
+
+    function updateActiveAssistantDisplay(firstName, sex) {
+      const frame = document.getElementById('active-assistant-display');
+      const avatarSvg = sex === 'Female' 
+        ? `<svg class="w-8 h-8 text-pink-400 mt-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`
+        : `<svg class="w-8 h-8 text-blue-400 mt-1" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
+      
+      frame.innerHTML = `
+        <div class="flex items-center justify-between w-full bg-slate-900 border border-emerald-500/30 rounded-xl p-3 w-full animate-fade-in">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-gray-800 border border-gray-700 overflow-hidden flex items-center justify-center">${avatarSvg}</div>
+            <div>
+              <p class="text-sm font-extrabold text-white tracking-wide uppercase">${firstName}</p>
+              <p class="text-[10px] text-emerald-400 font-mono tracking-widest uppercase font-bold mt-0.5">Active Assistant</p>
+            </div>
+          </div>
+          <span class="text-lg bg-emerald-500/20 text-emerald-400 px-2.5 py-1 rounded-full border border-emerald-500/40 font-bold">✅</span>
+        </div>`;
+    }
+
+    // --- Stylus Handwriting Simulator Component Ghost Text Extraction OCR Loop ---
+    function processStylusHandwritingOCR(val) {
+      const nameMatch = val.match(/Name:\s*([^,
+]+)/i);
+      const ageMatch = val.match(/Age:\s*([0-9a-zA-Z\s]+)/i);
+      const sexMatch = val.match(/Sex:\s*([^,
+]+)/i);
+      const jobMatch = val.match(/Occupation:\s*([^,
+]+)/i);
+      const allergyMatch = val.match(/Allergies:\s*([^,
+]+)/i);
+      const conditionMatch = val.match(/Conditions:\s*([^,
+]+)/i);
+
+      document.getElementById('ghost-name').textContent = nameMatch ? nameMatch[1].trim() : "—";
+      document.getElementById('ghost-age').textContent = ageMatch ? ageMatch[1].trim() : "—";
+      document.getElementById('ghost-job').textContent = jobMatch ? jobMatch[1].trim() : "—";
+      document.getElementById('ghost-allergies').textContent = allergyMatch ? allergyMatch[1].trim() : "—";
+      document.getElementById('ghost-conditions').textContent = conditionMatch ? conditionMatch[1].trim() : "—";
+
+      if(sexMatch) {
+        let sexString = sexMatch[1].trim().toLowerCase();
+        if(sexString.includes('female')) {
+          document.getElementById('ghost-sex').textContent = "FEMALE (PREGNANT | 3RD TRIMESTER | BREASTFEEDING)";
+        } else {
+          document.getElementById('ghost-sex').textContent = sexString.toUpperCase();
+        }
+      } else {
+        document.getElementById('ghost-sex').textContent = "—";
+      }
+    }
+
+    UX_commitNewPatientProfileData = function() {
+      const name = document.getElementById('ghost-name').textContent;
+      const overlay = document.getElementById('new-patient-success-overlay');
+      document.getElementById('success-patient-slug').textContent = `Target Reference: ${name}`;
+      
+      overlay.classList.remove('hidden');
+      
+      // Strict 600ms transition state layout lock enforcement
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+        closeModal('modal-new-patient');
+        loadDiagnosisHelpDashboardView();
+      }, 600);
+    }
+    
+    // global overwrite fix
+    window.commitNewPatientProfileData = UX_commitNewPatientProfileData;
+
+    // --- Returning Patient Operations Lookup System Layouts ---
+    function executePatientLookup() {
+      const code = document.getElementById('patient-lookup-input').value.trim();
+      const failBlock = document.getElementById('lookup-fail-actions');
+      const snackbar = document.getElementById('returning-patient-snackbar');
+      
+      failBlock.classList.add('hidden');
+      
+      if(code.toLowerCase() === 'p-100' || code.length > 2) {
+        let targetName = code.toLowerCase() === 'p-100' ? 'JOHN DOE' : code.toUpperCase();
+        document.getElementById('snackbar-text-field').textContent = `✓ ID RECOGNIZED: ${targetName} | DOB: 11/23/1971 | LOADING LAST VISIT....`;
+        snackbar.classList.remove('translate-y-full');
+        
+        // Fast-track routing layout execution framework sequence (Exactly 600ms layout lock)
+        setTimeout(() => {
+          snackbar.classList.add('translate-y-full');
+          closeModal('modal-returning-patient');
+          loadDiagnosisHelpDashboardView();
+        }, 600);
+      } else {
+        failBlock.classList.remove('hidden');
+      }
+    }
+
+    function triggerLookupFallbackRoute(type) {
+      closeModal('modal-returning-patient');
+      if(type === 'new') {
+        setTimeout(() => openModal('modal-new-patient'), 350);
+      } else {
+        setTimeout(() => openModal('modal-paper-patient'), 350);
+      }
+    }
+
+    // --- Intelligent Scanner Camera Viewfinder Actions Engines ---
+    function executeDocumentCaptureSnap() {
+      capturedPageCount++;
+      const tray = document.getElementById('document-thumb-tray');
+      
+      if(capturedPageCount === 1) tray.innerHTML = ''; // wipe text placeholder
+      
+      const thumb = document.createElement('div');
+      thumb.className = "bg-teal-950 border border-teal-500 rounded-lg p-2 min-w-[80px] text-center font-mono text-[10px] text-teal-300 flex flex-col justify-between shadow-inner select-none";
+      thumb.innerHTML = `<span>📄 SHEET</span><span class="font-bold text-white block mt-1">Page ${capturedPageCount}</span>`;
+      tray.appendChild(thumb);
+      
+      const toast = document.getElementById('scanner-toast');
+      if(capturedPageCount === 1) {
+        toast.textContent = `💾 SCANNING PAGE 1... PROCESSED`;
+      } else {
+        toast.textContent = `💾 SCANNING PAGE ${capturedPageCount}... EXTRACTING LEGACY VITALS`;
+      }
+      toast.classList.remove('translate-y-32');
+      
+      setTimeout(() => toast.classList.add('translate-y-32'), 2200);
+    }
+
+    function finalizePaperScanningSequence() {
+      closeModal('modal-paper-patient');
+      loadDiagnosisHelpDashboardView();
+    }
+
+    // --- Destination Routing Engine Management Layout Views ---
+    function loadDiagnosisHelpDashboardView() {
+      document.getElementById('main-dashboard').classList.add('hidden');
+      document.getElementById('diagnosis-help-dashboard').classList.remove('hidden');
+      document.getElementById('diagnosis-help-dashboard').classList.add('flex');
+    }
+
+    function resetWorkspace() {
+      document.getElementById('stylus-simulated-textarea').value = '';
+      document.getElementById('patient-lookup-input').value = '';
+      document.getElementById('assistant-search-input').value = '';
+      document.getElementById('assistant-search-results').innerHTML = '';
+      document.getElementById('assistant-search-results').classList.add('hidden');
+      document.getElementById('document-thumb-tray').innerHTML = `<div class="text-xs text-zinc-600 font-mono italic flex items-center justify-center w-full">Empty tray. Capture pages to stack...</div>`;
+      capturedPageCount = 0;
+      
+      document.getElementById('diagnosis-help-dashboard').classList.remove('flex');
+      document.getElementById('diagnosis-help-dashboard').classList.add('hidden');
+      document.getElementById('main-dashboard').classList.remove('hidden');
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      startLiveTime();
-      setupAccordion();
+      startLiveTimeTicker();
     });
   </script>
 </body>
